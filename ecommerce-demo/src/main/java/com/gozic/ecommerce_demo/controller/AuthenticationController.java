@@ -2,7 +2,10 @@ package com.gozic.ecommerce_demo.controller;
 
 import com.gozic.ecommerce_demo.dto.UserRegistrationDTO;
 import com.gozic.ecommerce_demo.dto.UserSigninDTO;
+import com.gozic.ecommerce_demo.entity.Product;
 import com.gozic.ecommerce_demo.entity.User;
+import com.gozic.ecommerce_demo.repository.CategoryRepository;
+import com.gozic.ecommerce_demo.repository.ProductRepository;
 import com.gozic.ecommerce_demo.repository.UserRepository;
 import com.gozic.ecommerce_demo.service.UserService;
 import jakarta.persistence.NoResultException;
@@ -11,16 +14,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class AuthenticationController {
 
     UserService userService;
     UserRepository userRepository;
+    CategoryRepository categoryRepository;
+    ProductRepository productRepository;
 
     @Autowired
-    public AuthenticationController(UserService userService, UserRepository userRepository) {
+    public AuthenticationController(UserService userService, UserRepository userRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
 
     //default request mapping
@@ -49,7 +58,7 @@ public class AuthenticationController {
         }
 
         //check for password
-        if(!userDb.getPassword().equals(userSigninDTO.getPassword())) {
+        if (!userDb.getPassword().equals(userSigninDTO.getPassword())) {
             model.addAttribute("errorMessage", "Wrong credential information");
             return "sign-in";
         }
@@ -59,7 +68,22 @@ public class AuthenticationController {
 
     //show homepage
     @GetMapping("/home")
-    public String showHome() {
+    public String showHome(Model theModel) {
+
+        //fetch db data
+        List<Product> prodForMen = productRepository.findProductsByCategoryId(1);
+        List<Product> prodForWomen = productRepository.findProductsByCategoryId(2);
+        List<Product> prodForBoys = productRepository.findProductsByCategoryId(3);
+        List<Product> prodForGirls = productRepository.findProductsByCategoryId(4);
+
+        System.out.println(prodForMen);
+
+        //send to the view layer
+        theModel.addAttribute("menProds", prodForMen);
+        theModel.addAttribute("womenProds", prodForWomen);
+        theModel.addAttribute("boysProds", prodForBoys);
+        theModel.addAttribute("girlsProds", prodForGirls);
+
         return "home";
     }
 
