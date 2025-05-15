@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    <script src="./js/home.js" defer></script>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+</head>
+<body>
+<div class="container">
+    <!-- header -->
+    <div class="header">
+        <div class="left">
+            <div class="logo">
+                <img src="./assets/logo.png" alt="Logo"/>
+            </div>
+            <div class="categories">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#men">Đồ Nam</a></li>
+                    <li><a href="#women">Đồ Nữ</a></li>
+                    <li><a href="#boys">Đồ Bé Trai</a></li>
+                    <li><a href="#girls">Đồ Bé Gái</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="right">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Bạn muốn tìm gì?"/>
+                <button>Tìm kiếm</button>
+            </div>
+            <div class="interactive-buttons">
+                <ul>
+                    <li>
+                        <a href=""><i class="fa-solid fa-circle-user"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa-solid fa-store"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa-solid fa-heart-circle-check"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header -->
+
+    <!-- content -->
+    <div class="content" id="home">
+        <div class="banner" id="banner">
+            <img src="./assets/banner.jpg" alt=""/>
+        </div>
+        <div class="about" id="about">
+            <h4>VPS_Fashion - Khoác lên mình niềm vui gia đình Việt</h4>
+            <div class="illustration">
+                <img src="./assets/speech-bubble.png" alt=""/>
+                <p>Hỗ trợ</p>
+            </div>
+        </div>
+        <div class="description" id="description">
+            <div class="left">
+                <img src="./assets/logo-vps.png" alt=""/>
+            </div>
+            <div class="right">
+                <p>
+                    <b>VPS_Fashion</b> 2 năm - Khoác lên niềm vui gia đình Việt Năm
+                    2021, Công ty Cổ phần Thương mại và Dịch vụ Hoàng Dương được thành
+                    lập với mục đích chính ban đầu là hoạt động trong lĩnh vực sản
+                    xuất hàng thời trang xuất khẩu với các sản phẩm chủ yếu làm từ len
+                    và sợi. Năm 2022 thương hiệu thời trang VPS-Fashion ra đời, tự hào
+                    trở thành một cột mốc đáng nhớ của doanh nghiệp Việt trong ngành
+                    thời trang.
+                </p>
+                <img src="./assets/illustration.jpg" alt=""/>
+            </div>
+        </div>
+        <div class="mission" id="misson">
+            <p>
+                <b>VPS-Fashion</b> hướng đến mục tiêu mang lại niềm vui mặc mới mỗi ngày
+                cho hàng triệu người tiêu dùng Việt. Chúng tôi tin rằng người dân
+                Việt Nam cũng đang hướng đến một cuộc sống năng động, tích cực hơn.
+            </p>
+        </div>
+        <div class="explore" id="explore">
+            <a href="#">XEM THÊM</a>
+        </div>
+        <div class="banner">
+            <img src="./assets/banner-2.jpg" alt=""/>
+        </div>
+        <div class="products">
+            <h2>Danh mục sản phẩm</h2>
+            <div class="category" id="men">
+                <h4>Đồ Nam</h4>
+                <div class="items">
+                    <div class="item" th:each="tempProd : ${menProds}">
+                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                        <p th:text="${tempProd.name}"></p>
+                        <p th:text="${tempProd.price}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="category" id="women">
+                <h4>Đồ Nữ</h4>
+                <div class="items">
+                    <div class="item" th:each="tempProd : ${womenProds}">
+                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                        <p th:text="${tempProd.name}"></p>
+                        <p th:text="${tempProd.price}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="category" id="boys">
+                <h4>Đồ Bé Trai</h4>
+                <div class="items">
+                    <div class="item" th:each="tempProd : ${boysProds}">
+                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                        <p th:text="${tempProd.name}"></p>
+                        <p th:text="${tempProd.price}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="category" id="girls">
+                <h4>Đồ Bé Gái</h4>
+                <div class="items">
+                    <div class="item" th:each="tempProd : ${girlsProds}">
+                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                        <p th:text="${tempProd.name}"></p>
+                        <p th:text="${tempProd.price}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="explore">
+            <a href="#">XEM THÊM</a>
+        </div>
+    </div>
+    <!-- content -->
+
+    <!-- footer -->
+    <div class="footer">
+        <div class="col-1">
+            <h1>Về chúng tôi</h1>
+            <p>
+                Công ty Cổ phần Thương mại và Dịch vụ Vuong-Group được thành lập với
+                mục đích chính ban đầu là hoạt động trong lĩnh vực sản xuất hàng
+                thời trang xuất khẩu với các sản phẩm chủ yếu làm từ len và sợi. Năm
+                2023, thương hiệu thời trang VPS ra đời, tự hào trở thành một cột
+                mốc đáng nhớ của doanh nghiệp Việt trong ngành thời trang. Mang đến
+                niềm vui cho hàng triệu gia đình Việt, VPS hướng đến mục tiêu mang
+                lại niềm vui mặc mới mỗi ngày cho hàng triệu người tiêu dùng Việt.
+                Chúng tôi tin rằng người dân Việt Nam cũng đang hướng đến một cuộc
+                sống năng động, tích cực hơn.
+            </p>
+        </div>
+        <div class="col-2">
+            <h1>Đường dẫn</h1>
+            <ul>
+                <li><a href="">Trang chủ</a></li>
+                <li><a href="">Về chúng tôi</a></li>
+                <li><a href="">Thông tin liên hệ</a></li>
+            </ul>
+        </div>
+        <div class="col-3">
+            <h1>Thông tin liên hệ</h1>
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                Địa chỉ: 125A6 Trần Huy Liệu Quận Ba Đình Hà Nội
+            </p>
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                +84 363652758
+            </p>
+            <p>
+                <i class="fa-brands fa-facebook"></i>
+                Facebook
+            </p>
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                nguyenquocvuong 27042002@gmail.com
+            </p>
+            <div>
+                <input type="text" placeholder="Email address"/>
+                <button>Gửi</button>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+</div>
+</body>
+</html>
