@@ -28,7 +28,8 @@ public class EcommerceDemoApplication {
 //            addCategories(categoryService);
 //            createUser(userService);
 //            findAllUser(userService);
-            createProductWithCategories(productService, categoryService);
+//            createProductWithCategories(productService, categoryService);
+            System.out.println("Gozic app is up and running");
         };
 
     }
