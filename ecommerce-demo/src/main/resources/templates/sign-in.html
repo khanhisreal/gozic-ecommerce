@@ -63,15 +63,20 @@
         <div class="container">
             <div class="form">
                 <h1>Đăng nhập</h1>
-                <form th:action="@{/processSignIn}" method="post">
+                <form th:action="@{/authenticateTheUser}" method="post">
                     <div class="input-group">
                         <input type="text" id="username" name="username" placeholder="Tên Tài Khoản" />
                     </div>
                     <div class="input-group">
                         <input type="password" id="password" name="password" placeholder="Mật khẩu" />
                     </div>
-                    <div th:if="${errorMessage}" class="error-message">
-                        <p th:text="${errorMessage}"></p>
+                    <!--check for error-->
+                    <div th:if="${param.error}" class="error-message">
+                        <p>Sorry! You entered invalid username/password.</p>
+                    </div>
+                    <!--check for logout-->
+                    <div th:if="${param.logout}" class="logout-successfully">
+                        <p>You have been logged out.</p>
                     </div>
                     <button type="submit">Đăng nhập ngay</button>
                 </form>

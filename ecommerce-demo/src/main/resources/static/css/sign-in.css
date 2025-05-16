@@ -225,6 +225,14 @@
   color: darkred;
 }
 
+.content .container .form .logout-successfully {
+    align-self: center;
+}
+
+.content .container .form  .logout-successfully p {
+  color: green;
+}
+
 /* content ends  */
 
 /* footer starts */

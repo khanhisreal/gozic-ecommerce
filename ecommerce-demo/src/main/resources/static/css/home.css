@@ -90,6 +90,14 @@ html {
   background-color: lightgray;
 }
 
+.header .interactive-buttons a {
+  color: black;
+}
+
+.header .interactive-buttons a:hover {
+  color: orange;
+}
+
 .header .interactive-buttons ul {
   display: flex;
   margin-left: 50px;
@@ -98,14 +106,108 @@ html {
 .header .interactive-buttons ul li {
   list-style-type: none;
   padding: 10px;
+  position: relative;
 }
 
-.header .interactive-buttons ul li a {
+.header .interactive-buttons ul li:first-child .modal {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+  display: none;
+  white-space: nowrap;
+}
+
+.header .interactive-buttons ul li:first-child .modal p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.header .interactive-buttons ul li:nth-child(4) .modal {
+  position: absolute;
+  right: 30px;
+  top: 45px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+/* Cart table with hidden borders and clean layout */
+#cart {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: 400px;
+  max-height: 500px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px 5px;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10;
+  display: none;
+  border-radius: 2.5px;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table thead {
+  background-color: #f1f1f1;
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 8px;
+  text-align: center;
+}
+
+.cart-table tbody {
+  display: block;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cart-table thead,
+.cart-table tbody tr {
+  display: table;
+  width: 100%;
+}
+
+.checkout-btn {
+  padding: 12px;
+  width: 40%;
+  background-color: darkorange;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: auto;
+  border-radius: 5px;
+}
+
+.product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.checkout-btn:hover {
+  background-color: bisque;
+}
+
+.header .interactive-buttons ul li button {
+  margin-left: 10px;
   color: black;
-}
-
-.header .interactive-buttons ul li a:hover {
-  color: orange;
 }
 
 .header .left,
@@ -194,6 +296,7 @@ html {
   position: fixed;
   top: 400px;
   right: 25px;
+  z-index: 10;
 }
 
 .content .about .illustration:hover {

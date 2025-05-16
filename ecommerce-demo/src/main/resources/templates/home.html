@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/css/home.css}"/>
-    <script src="./js/home.js" defer></script>
+    <script th:src="@{/js/home.js}" defer></script>
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -41,7 +41,14 @@
             <div class="interactive-buttons">
                 <ul>
                     <li>
-                        <a href=""><i class="fa-solid fa-circle-user"></i></a>
+                        <a href="" id="user-icon"><i class="fa-solid fa-circle-user"></i></a>
+                        <div class="modal" id="sign-out">
+                            <p>Hello, <span th:text="${session.username}"></span></p>
+                            <button><i class="fa-solid fa-user-pen"></i></button>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit"><i class="fa-regular fa-circle-xmark"></i></button>
+                            </form>
+                        </div>
                     </li>
                     <li>
                         <a href=""><i class="fa-solid fa-store"></i></a>
@@ -50,7 +57,34 @@
                         <a href=""><i class="fa-solid fa-heart-circle-check"></i></a>
                     </li>
                     <li>
-                        <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+                        <a href="" id="cart-icon"
+                        ><i class="fa-solid fa-cart-shopping"></i
+                        ></a>
+                        <div class="modalCart" id="cart">
+                            <table class="cart-table">
+                                <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item : ${cartItems}">
+                                    <td>
+                                        <img th:src="@{${item.product.imageUrl}}" alt="Product image"
+                                             class="product-image"/>
+                                    </td>
+                                    <td th:text="${item.product.name}"></td>
+                                    <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + 'đ'"></td>
+                                    <td th:text="${item.quantity}"></td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                            <button class="checkout-btn">Check Out</button>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -106,9 +140,12 @@
                 <h4>Đồ Nam</h4>
                 <div class="items">
                     <div class="item" th:each="tempProd : ${menProds}">
-                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
-                        <p th:text="${tempProd.name}"></p>
-                        <p th:text="${tempProd.price}"></p>
+                        <form th:action="@{/cart/add}" method="post">
+                            <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                            <p th:text="${tempProd.name}"></p>
+                            <p th:text="${tempProd.price}"></p>
+                            <input type="hidden" name="productId" th:value="${tempProd.productId}"/>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -116,9 +153,12 @@
                 <h4>Đồ Nữ</h4>
                 <div class="items">
                     <div class="item" th:each="tempProd : ${womenProds}">
-                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
-                        <p th:text="${tempProd.name}"></p>
-                        <p th:text="${tempProd.price}"></p>
+                        <form th:action="@{/cart/add}" method="post">
+                            <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                            <p th:text="${tempProd.name}"></p>
+                            <p th:text="${tempProd.price}"></p>
+                            <input type="hidden" name="productId" th:value="${tempProd.productId}"/>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -126,19 +166,26 @@
                 <h4>Đồ Bé Trai</h4>
                 <div class="items">
                     <div class="item" th:each="tempProd : ${boysProds}">
-                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
-                        <p th:text="${tempProd.name}"></p>
-                        <p th:text="${tempProd.price}"></p>
+                        <form th:action="@{/cart/add}" method="post">
+                            <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                            <p th:text="${tempProd.name}"></p>
+                            <p th:text="${tempProd.price}"></p>
+                            <input type="hidden" name="productId" th:value="${tempProd.productId}"/>
+                        </form>
                     </div>
                 </div>
             </div>
+
             <div class="category" id="girls">
                 <h4>Đồ Bé Gái</h4>
                 <div class="items">
                     <div class="item" th:each="tempProd : ${girlsProds}">
-                        <img th:src="@{${tempProd.imageUrl}}" alt=""/>
-                        <p th:text="${tempProd.name}"></p>
-                        <p th:text="${tempProd.price}"></p>
+                        <form th:action="@{/cart/add}" method="post">
+                            <img th:src="@{${tempProd.imageUrl}}" alt=""/>
+                            <p th:text="${tempProd.name}"></p>
+                            <p th:text="${tempProd.price}"></p>
+                            <input type="hidden" name="productId" th:value="${tempProd.productId}"/>
+                        </form>
                     </div>
                 </div>
             </div>
