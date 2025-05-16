@@ -30,9 +30,13 @@ public class CartItem {
 
     //do not cascade delete
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
     //@JoinColumn is the column at the CartItem table, not Product entity
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public CartItem() {
+    }
 
     public CartItem(Cart cart, Product product, int quantity) {
         if (cart == null || product == null) {

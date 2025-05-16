@@ -7,6 +7,7 @@ import com.gozic.ecommerce_demo.entity.User;
 import com.gozic.ecommerce_demo.repository.CartItemRepository;
 import com.gozic.ecommerce_demo.repository.CartRepository;
 import com.gozic.ecommerce_demo.repository.ProductRepository;
+import com.gozic.ecommerce_demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,31 @@ public class CartService {
 
     private CartRepository cartRepository;
     private ProductRepository productRepository;
-    private CartItemRepository cartItemRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, CartItemRepository cartItemRepository) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, UserRepository userRepository) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
-        this.cartItemRepository = cartItemRepository;
+        this.userRepository = userRepository;
+    }
+
+    public Cart getCartByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("Username not found - " + username);
+        }
+
+        Cart cart = cartRepository.findByUser(user).orElse(null);
+
+        if (cart == null) {
+            cart = new Cart(user);
+            user.setCart(cart);
+            cartRepository.save(cart);
+            userRepository.save(user);
+        }
+
+        return cart;
     }
 
     //transactions ensure that a series of operations either all succeed or all fail

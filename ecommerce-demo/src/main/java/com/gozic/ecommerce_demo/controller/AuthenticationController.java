@@ -1,19 +1,20 @@
 package com.gozic.ecommerce_demo.controller;
 
 import com.gozic.ecommerce_demo.dto.UserRegistrationDTO;
-import com.gozic.ecommerce_demo.dto.UserSigninDTO;
+import com.gozic.ecommerce_demo.entity.Cart;
+import com.gozic.ecommerce_demo.entity.CartItem;
 import com.gozic.ecommerce_demo.entity.Product;
 import com.gozic.ecommerce_demo.entity.User;
-import com.gozic.ecommerce_demo.repository.CategoryRepository;
-import com.gozic.ecommerce_demo.repository.ProductRepository;
-import com.gozic.ecommerce_demo.repository.UserRepository;
+import com.gozic.ecommerce_demo.repository.*;
 import com.gozic.ecommerce_demo.service.UserService;
-import jakarta.persistence.NoResultException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,13 +24,17 @@ public class AuthenticationController {
     UserRepository userRepository;
     CategoryRepository categoryRepository;
     ProductRepository productRepository;
+    CartRepository cartRepository;
+    CartItemRepository cartItemRepository;
 
     @Autowired
-    public AuthenticationController(UserService userService, UserRepository userRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public AuthenticationController(UserService userService, UserRepository userRepository, CategoryRepository categoryRepository, ProductRepository productRepository, CartRepository cartRepository, CartItemRepository cartItemRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     //default request mapping
@@ -44,31 +49,14 @@ public class AuthenticationController {
         return "sign-in";
     }
 
-    @PostMapping("/processSignIn")
-    public String processSignIn(@ModelAttribute UserSigninDTO userSigninDTO, Model model) {
-
-        //fetch user from db
-        User userDb = new User();
-
-        try {
-            userDb = userRepository.findByUsername(userSigninDTO.getUsername());
-        } catch (NoResultException e) {
-            model.addAttribute("errorMessage", "Wrong credential information");
-            return "sign-in";
-        }
-
-        //check for password
-        if (!userDb.getPassword().equals(userSigninDTO.getPassword())) {
-            model.addAttribute("errorMessage", "Wrong credential information");
-            return "sign-in";
-        }
-
-        return "redirect:/home";
-    }
-
     //show homepage
     @GetMapping("/home")
-    public String showHome(Model theModel) {
+    public String showHome(Model theModel, HttpSession session, Principal principal) {
+
+        //add username of the current user to the session
+        if (principal != null && session.getAttribute("username") == null) {
+            session.setAttribute("username", principal.getName());
+        }
 
         //fetch db data
         List<Product> prodForMen = productRepository.findProductsByCategoryId(1);
@@ -76,13 +64,27 @@ public class AuthenticationController {
         List<Product> prodForBoys = productRepository.findProductsByCategoryId(3);
         List<Product> prodForGirls = productRepository.findProductsByCategoryId(4);
 
-        System.out.println(prodForMen);
-
         //send to the view layer
         theModel.addAttribute("menProds", prodForMen);
         theModel.addAttribute("womenProds", prodForWomen);
         theModel.addAttribute("boysProds", prodForBoys);
         theModel.addAttribute("girlsProds", prodForGirls);
+
+        //fetch current cart items of users who are logged in
+        if (principal != null) {
+            // Get the logged-in user by username
+            User currentUser = userRepository.findByUsername(principal.getName());
+            if (currentUser != null) {
+                Cart userCart = cartRepository.findByUser(currentUser).get();
+                if (userCart != null) {
+                    List<CartItem> cartItems = cartItemRepository.findByCart(userCart);
+                    theModel.addAttribute("cartItems", cartItems);
+                }
+            }
+        } else {
+            theModel.addAttribute("cartItems", new ArrayList<>()); // user not logged in
+        }
+
 
         return "home";
     }
